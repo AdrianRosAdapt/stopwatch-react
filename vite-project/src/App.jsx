@@ -1,62 +1,91 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { useEffect } from "react";
 
-// function FavoriteColor() {
-//   const [count, setCount] = useState(0);
-
-//   return (
-//     <>
-//       <h1>My current count is {count}!</h1>
-//       <button type="button" onClick={() => setCount(count + 1)}>
-//         Add one
-//       </button>
-//       <button onClick={() => setCount(count - 1)}>Minus one</button>
-//     </>
-//   );
-// }
-// function MyButtonStart() {
-//   const [count, setCount] = useState(0);
-//   function Timer() {
-//     useEffect(() => {
-//       setTimeout(() => {
-//         setCount((count) => count + 1);
-//       }, 10);
-//     });
-
-//     return count;
-//   }
-//   return <button onClick={Timer}>Start Counting</button>;
-// }
+const Laps = (props) => {
+  console.log(props);
+};
 
 const Stopwatch = () => {
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
+  const [buttonText, setButtonText] = useState("Start");
+  const [lapButtonText, setLapButtonText] = useState("Lap");
+  let lapsArray = [];
+  let lapObject = {};
   function runTimer() {
-    setTime((previousTime) => previousTime + 1);
+    setTime((prevTime) => prevTime + 1);
   }
+  function parseTime(centis) {
+    let seconds = Math.floor(centis / 100);
+    let actualSeconds = seconds % 60;
+    let minutes = Math.floor(seconds / 60);
+    let milis = centis % 100;
+    return `${minutes.toString().padStart(2, "0")}: ${actualSeconds
+      .toString()
+      .padStart(2, "0")}.${milis.toString().padStart(2, "0")} `;
+  }
+
+  // function handleLaps() {
+  //   lapsArray = [...lapsArray, time];
+  //   console.log(lapsArray);
+  // }
+
+  function handleStartStopButton() {
+    if (!running) {
+      setButtonText("Stop");
+      setLapButtonText("Lap");
+      setRunning(true);
+    } else if (running) {
+      setButtonText("Start");
+      setLapButtonText("Reset");
+      setRunning(false);
+    }
+  }
+  function handleLaps() {
+    let lapObj = {};
+    lapsArray = [...lapsArray, time];
+  }
+
+  function handlelapsReset() {
+    if (!running) [setLapButtonText()];
+  }
+  //Everytime 'runnin' is changed the arrow function in useEffect is going to be executed.
+  //The second paramater, the [] takes values and everytime they chagnge the hook will be executed.
   useEffect(() => {
     let interval;
     if (running) {
       interval = setInterval(runTimer, 10);
-    } else if (!running) {
-      clearInterval(interval);
     }
     return () => clearInterval(interval);
   }, [running]);
   return (
     <div className="stopwatch">
       <div className="numbers">
-        <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-        <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
-        <span>{("0" + ((time / 10) % 100)).slice(-3)}</span>
+        <span className="displayed-time">{parseTime(time)}</span>
       </div>
       <div className="buttons">
-        <button onClick={() => setRunning(true)}>Start</button>
-        <button onClick={() => setRunning(false)}>Stop</button>
         <button onClick={() => setTime(0)}>Reset</button>
+        <button
+          className={running ? "active-lap-button" : "inactive-lap-button"}
+        >
+          {lapButtonText}
+        </button>
+        {/* <button
+          className={running ? "start-button" : "inactive-start-button"}
+          onClick={() => setRunning(true)}
+        >
+          Start
+        </button> */}
+        <button
+          className={running ? "start-button" : "start-button"}
+          onClick={handleStartStopButton}
+        >
+          {buttonText}
+        </button>
       </div>
+      <div></div>
     </div>
   );
 };
@@ -65,9 +94,7 @@ function App() {
   return (
     <div>
       <Stopwatch></Stopwatch>
-      {/* <TimerDisplay></TimerDisplay>
-      <MyButtonLap></MyButtonLap>
-      <MyButtonStart></MyButtonStart> */}
+      {/* <Laps arr={lapsArray} /> */}
     </div>
   );
 }
