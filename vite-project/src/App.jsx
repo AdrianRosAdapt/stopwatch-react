@@ -22,6 +22,17 @@ function App() {
   //   lapNumber: 1,
   //   timeStamp1: 0,
   // });
+  function resetLapsArray() {
+    setLapsArray([]);
+  }
+
+  function resetTotalTime() {
+    setTime(0);
+  }
+
+  function setMinMaxLaps(fastest, slowest) {
+    setMinMaxLap({ ...minMaxlap, fastestLap: fastest, slowestLap: slowest });
+  }
 
   function runTimer() {
     setLapTime((prevLapTime) => prevLapTime + 1);
@@ -39,8 +50,8 @@ function App() {
     setRunning(false);
   }
 
-  function setTimeToNull() {
-    setTime(0);
+  function updateLapsArray(lapsList) {
+    setLapsArray([...lapsList]);
   }
 
   function startStopWatch() {
@@ -50,6 +61,10 @@ function App() {
     } else if (running) {
       setRunning(false);
     }
+  }
+
+  function setLapTimeToZero() {
+    setLapTime(0);
   }
 
   // function handleStartStopButton() {
@@ -81,13 +96,14 @@ function App() {
     // });
     // console.log(lapData);
     let newLapsArray = [{ lapCounter, timeStamp: lapTime }, ...lapsArray];
+
     addToLapCounter();
     let fastest = Math.min(...newLapsArray.map((lap) => lap.timeStamp));
     let slowest = Math.max(...newLapsArray.map((lap) => lap.timeStamp));
     if (lapCounter >= 2) {
       setMinMaxLap({ slowestLap: slowest, fastestLap: fastest });
     }
-    setLapsArray([{ lapCounter, timeStamp: lapTime }, ...lapsArray]);
+    setLapsArray([...newLapsArray]);
     setLapTime(0);
   }
 
@@ -121,18 +137,23 @@ function App() {
         <div className="timer-section">
           <Timer runningTime={time}></Timer>
         </div>
+
         <Buttons
           toggleStopWatch={toggleStopWatchOn}
           addToLapCounter={addToLapCounter}
-          lapCunter={lapCounter}
+          lapCounter={lapCounter}
           toggleOffStopwatch={toggleOffStopwatch}
           running={running}
           totalTime={time}
-          resetStopWatch={resetStopwatch}
+          resetStopwatch={resetStopwatch}
+          lapTime={lapTime}
+          updateLapsArray={setLapsArray}
+          setLapTimeToZero={setLapTimeToZero}
+          lapsArray={lapsArray}
+          setMinMaxLaps={setMinMaxLaps}
+          resetTotalTime={resetTotalTime}
         ></Buttons>
-
-        <div className="buttons-section">
-          <button
+        {/* <button
             className={running ? "active-lap-button" : "inactive-lap-button"}
             onClick={handlelapsReset}
           >
@@ -143,8 +164,8 @@ function App() {
             onClick={startStopWatch}
           >
             {startStopButtonText}
-          </button>
-        </div>
+          </button> */}
+
         <div>
           <Laps
             lapCounter={lapCounter}

@@ -6,6 +6,12 @@ function Buttons({
   running,
   totalTime,
   resetStopwatch,
+  lapTime,
+  updateLapsArray,
+  setLapTimeToZero,
+  lapsArray,
+  setMinMaxLaps,
+  resetTotalTime,
 }) {
   function startStopWatch() {
     toggleStopWatch();
@@ -18,22 +24,15 @@ function Buttons({
   //1.NEED TO CHANGE TO PROPS
   function handlelapsReset() {
     if (!running && totalTime > 0) {
-      resetStopwatch();
+      resetWholeStopWatch();
     } else if (running) {
       insertRows();
     }
   }
-  //1. STILL NEED TO CHANGE TO PROPS
-  //   function resetStopwatch() {
-  //     setTime(0);
-  //     setLapsArray([]);
-  //     setLapCounter(0);
-  //     setLapTime(0);
-  //     setMinMaxLap(
-  //       (minMaxlap.fastestLap = -1),
-  //       (minMaxlap.slowestLap = Infinity)
-  //     );
-  //   }
+
+  function resetWholeStopWatch() {
+    resetStopwatch();
+  }
 
   //1.NEED TO CHANGED VARIABLES TO APPROP. PROPS.
   function insertRows() {
@@ -42,11 +41,15 @@ function Buttons({
     let fastest = Math.min(...newLapsArray.map((lap) => lap.timeStamp));
     let slowest = Math.max(...newLapsArray.map((lap) => lap.timeStamp));
     if (lapCounter >= 2) {
-      setMinMaxLap({ slowestLap: slowest, fastestLap: fastest });
+      setMinMaxLaps(fastest, slowest);
     }
-    setLapsArray([{ lapCounter, timeStamp: lapTime }, ...lapsArray]);
-    setLapTime(0);
+
+    updateLapsArray([...newLapsArray]);
+    setLapTimeToZero();
   }
+
+  const startStopButtonText = !running ? "Start" : "Stop";
+  const lapButtonText = totalTime === 0 || running ? "Lap" : "Reset";
 
   return (
     <div className="buttons-section">
