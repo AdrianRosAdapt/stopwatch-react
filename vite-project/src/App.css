@@ -6,7 +6,7 @@
 }
 
 ::-webkit-scrollbar {
-  background-color: transparent;
+  display: none;
 }
 
 .active-lap-button {
@@ -38,7 +38,7 @@
 }
 
 .displayed-time {
-  /* font-size: 2cm; */
+  font-size: 2cm;
   font-variant-numeric: tabular-nums;
   font-weight: 100;
 }
@@ -101,8 +101,9 @@ table .initial-table-data {
   margin-right: 20px;
   margin-left: 20px;
   overflow-y: auto;
-  max-height: 250px;
+  max-height: 280px;
   display: block;
+  border-top: 1px solid rgba(250, 250, 250, 0.2);
 }
 
 table {
@@ -171,4 +172,10 @@ td:nth-child(2) {
 }
 .slowest-lap td {
   color: rgb(255, 59, 48);
+}
+
+td {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
 }

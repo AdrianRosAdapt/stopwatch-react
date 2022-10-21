@@ -15,16 +15,6 @@ function App() {
     fastestLap: Infinity,
     slowestLap: -1,
   });
-  // const [lapData, setLapData] = useState({
-  //   slowestLap: -1,
-  //   fastestLap: Infinity,
-  //   laps: [],
-  //   lapNumber: 1,
-  //   timeStamp1: 0,
-  // });
-  function resetLapsArray() {
-    setLapsArray([]);
-  }
 
   function resetTotalTime() {
     setTime(0);
@@ -54,56 +44,7 @@ function App() {
     setLapsArray([...lapsList]);
   }
 
-  function startStopWatch() {
-    toggleStopWatchOn();
-    if (lapCounter === 0) {
-      addToLapCounter();
-    } else if (running) {
-      setRunning(false);
-    }
-  }
-
   function setLapTimeToZero() {
-    setLapTime(0);
-  }
-
-  // function handleStartStopButton() {
-  //   // setRunning(true);
-  //   if (!running) {
-  //     if (lapCounter === 0) {
-  //       setLapCounter(lapCounter + 1);
-  //     }
-  //   } else if (!running) {
-  //     setRunning(false);
-  //   }
-  // }
-  function handlelapsReset() {
-    if (!running && time > 0) {
-      resetStopwatch();
-    } else if (running) {
-      insertRows();
-    }
-  }
-
-  // 1. determine/check the min + max lap (and change if necessary)
-  // 2. when rendering, if the current IS the min or max lap, add the class name
-
-  function insertRows() {
-    // setLapData({
-    //   ...lapData,
-    //   laps: [...lapData.laps, lapTime],
-    //   timeStamp1: lapTime,
-    // });
-    // console.log(lapData);
-    let newLapsArray = [{ lapCounter, timeStamp: lapTime }, ...lapsArray];
-
-    addToLapCounter();
-    let fastest = Math.min(...newLapsArray.map((lap) => lap.timeStamp));
-    let slowest = Math.max(...newLapsArray.map((lap) => lap.timeStamp));
-    if (lapCounter >= 2) {
-      setMinMaxLap({ slowestLap: slowest, fastestLap: fastest });
-    }
-    setLapsArray([...newLapsArray]);
     setLapTime(0);
   }
 
@@ -128,9 +69,6 @@ function App() {
     return () => clearInterval(interval);
   }, [running]);
 
-  const startStopButtonText = !running ? "Start" : "Stop";
-  const lapButtonText = time === 0 || running ? "Lap" : "Reset";
-
   return (
     <div className="container">
       <div className="stopwatch">
@@ -147,25 +85,12 @@ function App() {
           totalTime={time}
           resetStopwatch={resetStopwatch}
           lapTime={lapTime}
-          updateLapsArray={setLapsArray}
+          updateLapsArray={updateLapsArray}
           setLapTimeToZero={setLapTimeToZero}
           lapsArray={lapsArray}
           setMinMaxLaps={setMinMaxLaps}
           resetTotalTime={resetTotalTime}
         ></Buttons>
-        {/* <button
-            className={running ? "active-lap-button" : "inactive-lap-button"}
-            onClick={handlelapsReset}
-          >
-            {lapButtonText}
-          </button>
-          <button
-            className={running ? "stop-button" : "start-button"}
-            onClick={startStopWatch}
-          >
-            {startStopButtonText}
-          </button> */}
-
         <div>
           <Laps
             lapCounter={lapCounter}
