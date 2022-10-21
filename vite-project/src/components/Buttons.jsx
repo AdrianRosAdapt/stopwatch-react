@@ -54,11 +54,20 @@ function Buttons({
   return (
     <div className="buttons-section">
       <button
-        className={running ? "active-lap-button" : "inactive-lap-button"}
+        className={
+          totalTime === 0 && !running
+            ? "inactive-lap-button"
+            : "active-lap-button"
+        }
         onClick={handlelapsReset}
       >
         {lapButtonText}
       </button>
+      <div className="middle-dot-container">
+        <button className="middle-dot"></button>
+        <button className="middle-dot inactive-middle-dot"></button>
+      </div>
+
       <button
         className={running ? "stop-button" : "start-button"}
         onClick={startStopWatch}

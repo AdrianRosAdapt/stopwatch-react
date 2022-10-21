@@ -30,7 +30,7 @@ function Laps(props) {
                 <td>{parseTime(lap.timeStamp)}</td>
               </tr>
             ))}
-            <tr className="initial-table-row">
+            {/* <tr className="initial-table-row">
               <td className="initial-table-data"></td>
             </tr>
             <tr className="initial-table-row">
@@ -50,7 +50,7 @@ function Laps(props) {
             </tr>
             <tr className="initial-table-row">
               <td className="initial-table-data"></td>
-            </tr>
+            </tr> */}
           </tbody>
         </table>
       </div>
